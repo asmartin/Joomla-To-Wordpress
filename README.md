@@ -8,6 +8,8 @@ Joomla To Wordpress PHP Script
 5. Click links one by one for best and correct results
 
 # Users
+Note that by default, the `wp_users.display_name` column in the Wordpress database will contain the username. First name and last name will be stored in `wp_usermeta` under the `first_name` and `last_name` keys respectively. You can change this behavior by editing the code before import.
+
 Once users are imported, their Joomla password hash will be stored in the `joomlapass`
 field in `wp_usermeta`. Then, use [this plugin](https://github.com/asmartin/joomla-to-wordpress-migrated-users-authentication-plugin) to automatically check a user's password when he/she
 logs in and if it matches the Joomla hash, insert the password in the Wordpress format (thus completing the conversion).

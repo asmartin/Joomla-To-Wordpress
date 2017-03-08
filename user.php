@@ -14,7 +14,7 @@ if ( $users ) {
             'user_pass'       => $user->password,
             'user_login'      => $user->username,
             'user_email'      => $user->email,
-            'display_name'    => $user->name,
+            'display_name'    => $user->username,	// change to $user->name if you want the user's real name in this field instead of username
             'user_registered' => $user->registerDate,
         );
         $user_metadata_capabilities = array(
@@ -26,7 +26,33 @@ if ( $users ) {
             'user_id'    => $user->id,
             'meta_key'   => 'joomlapass',
             'meta_value' => $user->password
+	);
+
+	// import real name into first_name and last_name usermeta fields
+        $names = explode(" ", $user->name);
+        $first = $names[0];
+        $last = "";
+        if (count($names) > 1) {
+            $i=0;
+            foreach ($names as $key => $value) {
+                if ($i > 0) {
+                    $last .= " $value";
+                }
+                $i++;
+            }
+        }
+	$last = trim($last);
+        $user_metadata_firstname = array(
+            'user_id'    => $user->id,
+            'meta_key'   => 'first_name',
+            'meta_value' => $first
         );
+        $user_metadata_lastname = array(
+            'user_id'    => $user->id,
+            'meta_key'   => 'last_name',
+            'meta_value' => $last
+        );
+
         $user_metadata_user_level = array(
             'user_id'    => $user->id,
             'meta_key'   => 'wp_user_level',
@@ -35,6 +61,8 @@ if ( $users ) {
 
         $wpdb->insert(''. WPDP_PREFIX . 'users', $user_data);
         $wpdb->insert(''. WPDP_PREFIX . 'usermeta', $user_metadata_joomlapass);
+        $wpdb->insert(''. WPDP_PREFIX . 'usermeta', $user_metadata_firstname);
+        $wpdb->insert(''. WPDP_PREFIX . 'usermeta', $user_metadata_lastname);
 //        $wpdb->insert(''. WPDP_PREFIX . 'usermeta', $user_metadata_user_level);
 
         //In Simple SQL
@@ -50,6 +78,7 @@ if ( $users ) {
         */
      
     }
+ echo 'Users are Transferred';
+} else {
+ echo "No Users Found<br>";
 }
-echo '<br>';
-echo 'Users are Transferred';
