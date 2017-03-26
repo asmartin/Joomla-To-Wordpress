@@ -20,7 +20,8 @@ if ( $users ) {
         $user_metadata_capabilities = array(
             'user_id'    => $user->id,
             'meta_key'   => 'wp_capabilities',
-            'meta_value' => 'a:1:{s:10:"subscriber";b:1;}'  // change subscriber to something else if you want to
+            'meta_value' => 'a:2:{s:10:"subscriber";b:1;s:15:"bbp_participant";b:1;}'  // default user wordpress role is subscriber and bbpress is participant
+        //    'meta_value' => 'a:1:{s:10:"subscriber";b:1;}'  // use this if not using bbpress
         );
         $user_metadata_joomlapass = array(
             'user_id'    => $user->id,
@@ -52,6 +53,12 @@ if ( $users ) {
             'meta_key'   => 'last_name',
             'meta_value' => $last
         );
+        $user_metadata_nickname = array(
+            'user_id'    => $user->id,
+            'meta_key'   => 'nickname',
+            'meta_value' => $user->username
+        );
+
 
         $user_metadata_user_level = array(
             'user_id'    => $user->id,
@@ -63,6 +70,8 @@ if ( $users ) {
         $wpdb->insert(''. WPDP_PREFIX . 'usermeta', $user_metadata_joomlapass);
         $wpdb->insert(''. WPDP_PREFIX . 'usermeta', $user_metadata_firstname);
         $wpdb->insert(''. WPDP_PREFIX . 'usermeta', $user_metadata_lastname);
+        $wpdb->insert(''. WPDP_PREFIX . 'usermeta', $user_metadata_nickname);
+        $wpdb->insert(''. WPDP_PREFIX . 'usermeta', $user_metadata_capabilities);
 //        $wpdb->insert(''. WPDP_PREFIX . 'usermeta', $user_metadata_user_level);
 
         //In Simple SQL
